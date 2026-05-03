@@ -2,10 +2,9 @@
   "name": "unidadesconservacao_how_vi",
   "version": "1.0.0",
   "description": "Projeto para atividade de Hands on Work VI do Curso ADS da Univali",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -22,7 +21,8 @@
   "dependencies": {
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "mysql2": "^3.22.3",
     "nodemon": "^3.1.14",
-    "typeorm": "^0.3.28"
+    "sequelize": "^6.37.8"
   }
 }
