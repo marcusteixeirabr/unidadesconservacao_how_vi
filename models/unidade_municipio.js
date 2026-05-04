@@ -1,6 +1,4 @@
 import { DataTypes } from "sequelize";
-import Municipio from "./municipio.js";
-import UnidadeConservacao from "./unidade_conservacao.js";
 
 export default (sequelize) => {
   return sequelize.define(
@@ -13,18 +11,18 @@ export default (sequelize) => {
         primaryKey: true,
       },
       unidade_id: {
-        type: DataTypes.STRING(150),
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: UnidadeConservacao,
+          model: "unidade_conservacao",
           key: "id",
         },
       },
       municipio_id: {
-        type: DataTypes.STRING(150),
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: Municipio,
+          model: "municipio",
           key: "id",
         },
       },

@@ -1,7 +1,4 @@
 import { Sequelize, DataTypes } from "sequelize";
-import { Comunicacao } from "./comunicacao";
-
-const sequelize = new Sequelize();
 
 export default (sequelize) => {
   return sequelize.define(

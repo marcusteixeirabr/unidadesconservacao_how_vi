@@ -1,5 +1,5 @@
 import { DataTypes } from "sequelize";
-import UnidadeConservacao from "./unidade_conservacao.js";
+
 
 export default (sequelize) => {
   return sequelize.define(
@@ -35,13 +35,13 @@ export default (sequelize) => {
       unidade_id: {
         type: DataTypes.INTEGER,
         references: {
-          model: unidade_conservacao,
+          model: "unidade_conservacao",
           key: "id",
         },
       },
     },
     {
-      freezeTableName: true,
+      tableName: "comunicacao",
     },
   );
 };

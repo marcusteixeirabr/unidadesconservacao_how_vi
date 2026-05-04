@@ -1,5 +1,4 @@
 import { DataTypes } from "sequelize";
-import { Comunicacao } from "./comunicacao.js";
 
 export default (sequelize) => {
   return sequelize.define(
@@ -15,7 +14,7 @@ export default (sequelize) => {
         type: DataTypes.STRING(150),
         allowNull: false,
       },
-      uf: {
+      estado: {
         type: DataTypes.STRING(2),
         allowNull: false,
       },

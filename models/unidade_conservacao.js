@@ -1,6 +1,4 @@
 import { DataTypes } from "sequelize";
-import Comunicacao from "./comunicacao.js";
-import Instituicao from "./instituicao.js";
 
 export default (sequelize) => {
   return sequelize.define(
@@ -32,7 +30,7 @@ export default (sequelize) => {
       instituicao_id: {
         type: DataTypes.INTEGER,
         references: {
-          model: instituicao,
+          model: "instituicao",
           key: "id",
         },
       },
