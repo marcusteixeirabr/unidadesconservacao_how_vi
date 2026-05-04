@@ -6,15 +6,15 @@ const db = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.D
   dialect: "mysql",
 });
 
-function connection() {
+function connect() {
   db.authenticate()
     .then(() => {
-      console.log("Connection Successfull");
+      console.log("Connection successful");
     })
     .catch((error) => {
       console.log(JSON.stringify(error));
     });
 }
 
-connection();
+connect();
 export default db;

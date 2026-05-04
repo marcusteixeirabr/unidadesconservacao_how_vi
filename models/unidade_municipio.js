@@ -1,35 +1,36 @@
-import { Sequelize, DataTypes } from "sequelize";
-import Municipio from "./municipio";
-import UnidadeConservacao from "./unidade_conservacao";
+import { DataTypes } from "sequelize";
+import Municipio from "./municipio.js";
+import UnidadeConservacao from "./unidade_conservacao.js";
 
-const sequelize = new Sequelize();
-
-export default UnidadeMunicipio = sequelize.define(
-    'UnidadeMunicipio',
+export default (sequelize) => {
+  return sequelize.define(
+    "UnidadeMunicipio",
     {
-        id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            autoIncrement: true,
-            primaryKey: true,
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      unidade_id: {
+        type: DataTypes.STRING(150),
+        allowNull: false,
+        references: {
+          model: UnidadeConservacao,
+          key: "id",
         },
-        unidade_id: {
-            type: DataTypes.STRING(150),
-            allowNull: false,
-            references: {
-                model: UnidadeConservacao,
-                key: 'id'
-            }
+      },
+      municipio_id: {
+        type: DataTypes.STRING(150),
+        allowNull: false,
+        references: {
+          model: Municipio,
+          key: "id",
         },
-        municipio_id: {
-            type: DataTypes.STRING(150),
-            allowNull: false,
-            references: {
-                model: Municipio,
-                key: 'id'
-            }
-        },
+      },
     },
     {
-        tableName: 'unidade_municipio'
-    });
+      tableName: "unidade_municipio",
+    },
+  );
+};

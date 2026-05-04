@@ -1,43 +1,44 @@
-import { Sequelize, DataTypes } from "sequelize";
-import Comunicacao from "./comunicacao";
-import Instituicao from "./instituicao";
+import { DataTypes } from "sequelize";
+import Comunicacao from "./comunicacao.js";
+import Instituicao from "./instituicao.js";
 
-const sequelize = new Sequelize();
-
-export default UnidadeConservacao = sequelize.define(
-    'UnidadeConservacao',
+export default (sequelize) => {
+  return sequelize.define(
+    "UnidadeConservacao",
     {
-        id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            autoIncrement: true,
-            primaryKey: true,
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      nome: {
+        type: DataTypes.STRING(150),
+        allowNull: false,
+      },
+      data_criacao: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      descricao: {
+        type: DataTypes.STRING(150),
+        allowNull: false,
+      },
+      imagem_url: {
+        type: DataTypes.STRING(255),
+        allowNull: false,
+        defaultValue: 0,
+      },
+      instituicao_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: instituicao,
+          key: "id",
         },
-        nome: {
-            type: DataTypes.STRING(150),
-            allowNull: false,
-        },
-        data_criacao: {
-            type: DataTypes.DATE,
-            allowNull: false,
-        },
-        descricao: {
-            type: DataTypes.STRING(150),
-            allowNull: false,
-        },
-        imagem_url: {
-            type: DataTypes.STRING(255),
-            allowNull: false,
-            defaultValue: 0
-        },
-        instituicao_id: {
-            type: DataTypes.INTEGER,
-            references: {
-                model: instituicao,
-                key: 'id'
-            }
-        },
+      },
     },
     {
-        tableName: 'unidade_conservacao'
-    });
+      tableName: "unidade_conservacao",
+    },
+  );
+};
