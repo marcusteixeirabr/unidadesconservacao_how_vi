@@ -1,48 +1,55 @@
-import { DataTypes } from "sequelize";
+export default class Comunicacao {
+  constructor(mysqlConnection) {
+    this.mysqlConnection = mysqlConnection;
+  }
 
+  createComunicacaoTable() {
+    this.mysqlConnection.query(
+      `CREATE TABLE comunicacao (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        titulo VARCHAR(150) NOT NULL,
+        descricao TEXT NOT NULL,
+        data_hora DATETIME NOT NULL,
+        email VARCHAR(150) NOT NULL,
+        status INT NOT NULL DEFAULT 0,
+        unidade_id INT NOT NULL,
+        FOREIGN KEY (unidade_id) REFERENCES unidade_conservacao(id));`,
+      function (error, results, fields) {
+        if (error) throw error;
+        console.log("Criou a tabela: Municipio");
+      },
+    );
+  }
 
-export default (sequelize) => {
-  return sequelize.define(
-    "Comunicacao",
-    {
-      id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
+  seedComunicacaoTable() {
+    this.mysqlConnection.query(
+      `INSERT INTO comunicacao (titulo, descricao, data_hora, email, status, unidade_id) VALUES
+        ('Lixo na trilha', 'Tem lixo acumulado em alguns pontos', '2026-04-20 10:30:00', 'user1@email.com', 0, 1),
+        ('Placa quebrada', 'Uma placa informativa esta danificada', '2026-04-21 14:00:00', 'user2@email.com', 1, 2),
+        ('Pesca irregular', 'Possivel atividade ilegal na area', '2026-04-22 09:15:00', 'user3@email.com', 0, 3);`,
+      function (error, results, fields) {
+        if (error) throw error;
+        console.log("Adicionados os Municipio com sucesso!");
       },
-      titulo: {
-        type: DataTypes.STRING(150),
-        allowNull: false,
-      },
-      descricao: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      data_hora: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
-      email: {
-        type: DataTypes.STRING(150),
-        allowNull: false,
-      },
-      status: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: 0,
-      },
-      unidade_id: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "unidade_conservacao",
-          key: "id",
-        },
-      },
-    },
-    {
-      tableName: "comunicacao",
-      timestamps: false,
-    },
-  );
-};
+    );
+  }
+
+  async getComunicacao(id = undefined) {
+    if (!id || typeof id !== "number") throw new Error("Necessário informar um Id numérico para buscar o Município");
+
+    const [rows, fields] = await this.mysqlConnection.promise().query(
+      `SELECT 
+        c.titulo,
+        c.descricao, 
+        c.data_hora, 
+        c.email, 
+        c.status, 
+        uc.nome as unidade_nome
+      FROM comunicacao c
+      INNER JOIN unidade_conservacao uc
+        ON c.unidade_id = uc.id
+      WHERE c.id = ${id}`,
+    );
+    return rows;
+  }
+}

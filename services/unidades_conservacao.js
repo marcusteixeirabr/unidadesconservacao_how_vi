@@ -1,7 +1,7 @@
-import { UnidadeConservacao } from "../models/index.js";
+// import { UnidadeConservacao } from "../models/index.js";
 
-export async function getUnidadeConservacao(id) {
-  let data = await UnidadeConservacao.findByPk(id);
+// export async function getUnidadeConservacao(id) {
+//   let data = await UnidadeConservacao.findByPk(id);
 
-  return data;
-}
+//   return data;
+// }
