@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>Unidades de Conservação</title>
+    <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+    <h1>Unidades de Conservação</h1>
+    <ul id="lista"></ul>
+
+<script>
+
+    async function carregarUnidades() {
+        const resposta = await fetch('/unidades/');
+        const dados    = await resposta.json();
+        
+        const lista = document.getElementById('lista');
+        lista.innerHTML = dados.map(uc => `
+            <li>
+                <strong>${uc.unidade_nome}</strong> — ${uc.instituicao_nome}
+                <p>${uc.descricao}</p>
+                <small>${new Date(uc.data_criacao).toLocaleDateString("pt-BR")}</small> 
+            </li>
+        `).join('');
+    }
+    
+    carregarUnidades();
+
+</script>
+</body>
+</html>

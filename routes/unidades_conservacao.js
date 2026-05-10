@@ -12,3 +12,8 @@ ucRouter.get("/1", async (req, res) => {
   const data = await new Comunicacao(mysqlConnection).getComunicacao(1);
   return res.json(data);
 });
+
+ucRouter.get("/", async (req, res) => {
+  const data = await new UnidadeConservacao(mysqlConnection).getAllUnidadesConservacao();
+  return res.json(data);
+});
