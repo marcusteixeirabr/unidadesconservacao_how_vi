@@ -34,7 +34,8 @@ export default class Instituicao {
     const [rows, fields] = await this.mysqlConnection.promise().query(
       `SELECT nome, email
       FROM instituicao
-      WHERE id = ${id}`,
+      WHERE id = ?`,
+      [id],
     );
     return rows;
   }

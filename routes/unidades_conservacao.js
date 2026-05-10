@@ -7,9 +7,9 @@ import Municipio from "../models/municipio.js";
 import UnidadeConservacao from "../models/unidade_conservacao.js";
 import Comunicacao from "../models/comunicacao.js";
 
-ucRouter.get("/1", async (req, res) => {
+ucRouter.get("/:id", async (req, res) => {
   // const data = await new UnidadeConservacao(mysqlConnection).getAllUnidadesConservacao(1);
-  const data = await new Comunicacao(mysqlConnection).getComunicacao(1);
+  const data = await new Comunicacao(mysqlConnection).getComunicacao(req.params.id);
   return res.json(data);
 });
 

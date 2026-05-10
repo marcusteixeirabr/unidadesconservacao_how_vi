@@ -63,7 +63,8 @@ export default class UnidadeConservacao {
       FROM unidade_conservacao uc
       INNER JOIN instituicao i
         ON uc.instituicao_id = i.id
-      WHERE uc.id = ${id}`,
+      WHERE uc.id = ?`,
+      [id],
     );
     return rows;
   }

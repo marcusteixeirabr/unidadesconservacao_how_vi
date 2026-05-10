@@ -37,7 +37,8 @@ export default class Municipio {
     const [rows, fields] = await this.mysqlConnection.promise().query(
       `SELECT nome, estado
       FROM municipio
-      WHERE id = ${id}`,
+      WHERE id = ?`,
+      [id]
     );
     return rows;
   }

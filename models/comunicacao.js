@@ -29,7 +29,7 @@ export default class Comunicacao {
         ('Pesca irregular', 'Possivel atividade ilegal na area', '2026-04-22 09:15:00', 'user3@email.com', 0, 3);`,
       function (error, results, fields) {
         if (error) throw error;
-        console.log("Adicionados os Municipio com sucesso!");
+        console.log("Adicionados os Comunicacações com sucesso!");
       },
     );
   }
@@ -48,8 +48,36 @@ export default class Comunicacao {
       FROM comunicacao c
       INNER JOIN unidade_conservacao uc
         ON c.unidade_id = uc.id
-      WHERE c.id = ${id}`,
+      WHERE c.id = ?`,
+      [id],
     );
     return rows;
+  }
+
+  async createComunicacao({ titulo, descricao, data_hora, email, unidade_id }) {
+    try {
+      await this.mysqlConnection.promise().query(
+        `INSERT INTO comunicacao 
+        (titulo, descricao, data_hora, email, status, unidade_id) 
+        VALUES
+        (? , ?, ?, ?, ?, ?);`,
+        [titulo, descricao, data_hora, email, 0, unidade_id],
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateComunicacao({ comunicacao_id, status }) {
+    try {
+      await this.mysqlConnection.promise().query(
+        `UPDATE comunicacao 
+        SET status = ?
+        WHERE id = ?`,
+        [status, comunicacao_id],
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 }
