@@ -1,39 +1,68 @@
-async function carregarComunicacoes() {
+let todasComunicacoes = [];
+
+function renderComunicacoes(dados) {
     const lista = document.getElementById('lista');
+    lista.innerHTML = '';
+
+    if (dados.length === 0) {
+        lista.textContent = 'Nenhuma comunicação registrada.';
+        return;
+    }
+
+    dados.forEach(c => {
+        const item      = document.createElement('li');
+        const titulo    = document.createElement('strong')
+        const status    = document.createElement('span');
+        const unidade   = document.createElement('p');
+        const descricao = document.createElement('p');
+        const data      = document.createElement('small');
+
+        titulo.textContent = c.titulo;
+        status.textContent = c.status === 0 ? 'Pendente' : 'Resolvido';
+        status.className = c.status === 0 ? 'status pendente' : 'status resolvido';
+        unidade.className = 'unidade';
+        unidade.textContent = c.unidade_nome;
+        descricao.textContent = c.descricao;
+        data.textContent = new Date(c.data_hora).toLocaleString('pt-BR');
+
+        item.append(titulo, status, unidade, descricao, data);
+        lista.appendChild(item);
+    });
+}
+
+async function carregarDados() {
+    const lista = document.getElementById('lista');
+    const filtro = document.getElementById('filtro-uc');
 
     try {
-        const resposta = await fetch('/comunicado/');
+        const [resUcs, resComunicacoes] = await Promise.all([
+            fetch('/unidades/'),
+            fetch('/comunicado/')
+        ]);
 
-        if (!resposta.ok) {
-            lista.textContent = 'Erro ao carregar comunicações!';
+        if (!resUcs.ok || !resComunicacoes.ok) {
+            lista.textContent = 'Erro ao carregar dados.';
             return;
         }
 
-        const dados = await resposta.json();
+        const ucs = await resUcs.json();
+        todasComunicacoes = await resComunicacoes.json();
 
-        if (dados.length == 0) {
-            lista.textContent = 'Nenhuma comunicação registrada.';
-            return;
-        }
+        ucs.forEach(uc => {
+            const option = document.createElement('option');
+            option.value = uc.id;
+            option.textContent = uc.unidade_nome;
+            filtro.appendChild(option);
+        });
 
-        dados.forEach(c => {
-            const item      = document.createElement('li');
-            const titulo    = document.createElement('strong')
-            const status    = document.createElement('span');
-            const unidade   = document.createElement('p');
-            const descricao = document.createElement('p');
-            const data      = document.createElement('small');
+        renderComunicacoes(todasComunicacoes);
 
-            titulo.textContent = c.titulo;
-            status.textContent = c.status === 0 ? 'Pendente' : 'Resolvido';
-            status.className = c.status === 0 ? 'status pendente' : 'status resolvido';
-            unidade.className = 'unidade';
-            unidade.textContent = c.unidade_nome;
-            descricao.textContent = c.descricao;
-            data.textContent = new Date(c.data_hora).toLocaleString('pt-BR');
-
-            item.append(titulo, status, unidade, descricao, data);
-            lista.appendChild(item);
+        filtro.addEventListener('change', () => {
+            const ucId = Number(filtro.value);
+            const filtradas = ucId
+                ? todasComunicacoes.filter(c => c.unidade_id === ucId)
+                : todasComunicacoes;
+            renderComunicacoes(filtradas);
         });
 
     } catch (error) {
@@ -41,4 +70,4 @@ async function carregarComunicacoes() {
     }
 }
 
-carregarComunicacoes();
+carregarDados();
